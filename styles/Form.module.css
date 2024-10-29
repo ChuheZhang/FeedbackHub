@@ -1,59 +1,60 @@
-/* styles/Form.module.css */
-
+/* 容器样式 */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #f0f4f8;
-    text-align: center;
     padding: 20px;
+    text-align: center;
   }
   
+  /* 标题样式 */
   .title {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #333;
     margin-bottom: 1rem;
   }
   
+  /* 信息消息样式 */
   .message {
     font-size: 1.1rem;
     color: green;
     margin-bottom: 1rem;
   }
   
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  /* 表格样式 */
+  .table {
     width: 100%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-collapse: collapse;
+    margin-top: 20px;
   }
   
-  .label {
-    font-size: 1rem;
-    color: #333;
-    align-self: flex-start;
-    margin-bottom: 0.5rem;
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
   }
   
-  .input, .select {
+  .table th {
+    background-color: #0070f3;
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* 输入框样式 */
+  .input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 1rem;
+    padding: 5px;
+    box-sizing: border-box;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 3px;
   }
   
+  /* 按钮样式 */
   .button {
-    width: 100%;
-    padding: 10px;
+    margin-top: 10px;
+    padding: 10px 20px;
     font-size: 1rem;
     color: #fff;
     background-color: #0070f3;
@@ -65,5 +66,10 @@
   
   .button:hover {
     background-color: #005bb5;
+  }
+  
+  /* 表格行样式（反馈项） */
+  .feedbackItem {
+    margin-bottom: 20px;
   }
   

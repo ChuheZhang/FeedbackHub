@@ -34,16 +34,30 @@ export default function ViewFeedback() {
       {feedbacks.length === 0 ? (
         <p className={styles.message}>暂无反馈</p>
       ) : (
-        feedbacks.map((feedback) => (
-          <div key={feedback._id} className={styles.feedbackItem}>
-            <h3>学院: {feedback.college}</h3>
-            <p>班级: {feedback.class}</p>
-            <p>教师反馈: {feedback.teacherFeedback}</p>
-            <p>设备反馈: {feedback.equipmentFeedback}</p>
-            <p>提交者: {feedback.submittedBy?.username}</p>
-            <p>日期: {new Date(feedback.date).toLocaleDateString()}</p>
-          </div>
-        ))
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>学院</th>
+              <th>班级</th>
+              <th>教师反馈</th>
+              <th>设备反馈</th>
+              <th>提交者</th>
+              <th>日期</th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedbacks.map((feedback) => (
+              <tr key={feedback._id}>
+                <td>{feedback.college}</td>
+                <td>{feedback.class}</td>
+                <td>{feedback.teacherFeedback}</td>
+                <td>{feedback.equipmentFeedback}</td>
+                <td>{feedback.submittedBy?.username}</td>
+                <td>{new Date(feedback.date).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

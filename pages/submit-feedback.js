@@ -5,30 +5,34 @@ import axios from 'axios';
 import styles from '../styles/Form.module.css';
 
 export default function SubmitFeedback() {
-  const [form, setForm] = useState({
-    college: '',
-    class: '',
-    teacherFeedback: '',
-    equipmentFeedback: '',
-  });
+  const [feedbackList, setFeedbackList] = useState([
+    { college: '', class: '', teacherFeedback: '', equipmentFeedback: '' },
+  ]);
   const [message, setMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    // 检查用户是否登录
     const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
     }
   }, [router]);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (index, e) => {
+    const updatedList = [...feedbackList];
+    updatedList[index][e.target.name] = e.target.value;
+    setFeedbackList(updatedList);
+  };
+
+  const handleAddFeedback = () => {
+    setFeedbackList([...feedbackList, { college: '', class: '', teacherFeedback: '', equipmentFeedback: '' }]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('/api/feedback', form, {
+      await axios.post('/api/feedback', { feedbackList }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage('反馈提交成功！');
@@ -45,41 +49,65 @@ export default function SubmitFeedback() {
     <div className={styles.container}>
       <h1 className={styles.title}>提交反馈</h1>
       {message && <p className={styles.message}>{message}</p>}
+
       <form onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.label}>学院:</label>
-        <input
-          type="text"
-          name="college"
-          value={form.college}
-          onChange={handleChange}
-          required
-          className={styles.input}
-        />
-        <label className={styles.label}>班级:</label>
-        <input
-          type="text"
-          name="class"
-          value={form.class}
-          onChange={handleChange}
-          required
-          className={styles.input}
-        />
-        <label className={styles.label}>教师反馈:</label>
-        <textarea
-          name="teacherFeedback"
-          value={form.teacherFeedback}
-          onChange={handleChange}
-          required
-          className={styles.input}
-        />
-        <label className={styles.label}>设备反馈:</label>
-        <textarea
-          name="equipmentFeedback"
-          value={form.equipmentFeedback}
-          onChange={handleChange}
-          required
-          className={styles.input}
-        />
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>学院</th>
+              <th>班级</th>
+              <th>教师反馈</th>
+              <th>设备反馈</th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedbackList.map((feedback, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    type="text"
+                    name="college"
+                    value={feedback.college}
+                    onChange={(e) => handleChange(index, e)}
+                    required
+                    className={styles.input}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="class"
+                    value={feedback.class}
+                    onChange={(e) => handleChange(index, e)}
+                    required
+                    className={styles.input}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="teacherFeedback"
+                    value={feedback.teacherFeedback}
+                    onChange={(e) => handleChange(index, e)}
+                    required
+                    className={styles.input}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="equipmentFeedback"
+                    value={feedback.equipmentFeedback}
+                    onChange={(e) => handleChange(index, e)}
+                    required
+                    className={styles.input}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button type="button" onClick={handleAddFeedback} className={styles.button}>添加反馈</button>
         <button type="submit" className={styles.button}>提交反馈</button>
       </form>
     </div>

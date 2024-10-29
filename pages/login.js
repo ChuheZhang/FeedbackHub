@@ -1,5 +1,5 @@
 // pages/login.js
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from '../styles/Form.module.css';
@@ -15,25 +15,26 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // 输出请求体数据，确保格式正确
+      console.log("Login form data:", form);
+      
       const res = await axios.post('/api/auth/login', form);
       localStorage.setItem('token', res.data.token);
 
       setRole(res.data.role); // 设置角色
       setMessage('登录成功！');
+
+      // 根据角色跳转
+      if (res.data.role === 'user') {
+        router.push('/submit-feedback'); // 信息员跳转到反馈提交页面
+      } else if (res.data.role === 'teacher') {
+        router.push('/view-feedback'); // 老师跳转到查看反馈页面
+      }
     } catch (error) {
       setMessage(error.response?.data?.message || '登录失败');
-      console.error("Error in login:", error);
+      console.error("Error in login:", error.response?.data || error);
     }
   };
-
-  // 监听 role 变化，在角色信息更新后跳转
-  useEffect(() => {
-    if (role === 'user') {
-      router.push('/submit-feedback'); // 信息员跳转到反馈提交页面
-    } else if (role === 'teacher') {
-      router.push('/view-feedback'); // 老师跳转到查看反馈页面
-    }
-  }, [role, router]);
 
   return (
     <div className={styles.container}>

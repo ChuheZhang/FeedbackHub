@@ -18,7 +18,6 @@ export default async function handler(req, res) {
     if (!isMatch) return res.status(400).json({ message: '密码错误' });
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
     res.status(200).json({ token, role: user.role });
   } catch (error) {
     console.error("Error in login API:", error);

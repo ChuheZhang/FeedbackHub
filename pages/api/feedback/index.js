@@ -15,18 +15,17 @@ export default async function handler(req, res) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const userId = decoded.id;
+      const { feedbackList } = req.body;
 
-      const { college, class: className, teacherFeedback, equipmentFeedback } = req.body;
-
-      const feedback = await Feedback.create({
-        date: new Date(),
-        college,
-        class: className,
-        teacherFeedback,
-        equipmentFeedback,
+      // 处理多条反馈的批量插入
+      const feedbackData = feedbackList.map(feedback => ({
+        ...feedback,
         submittedBy: userId,
-      });
-      res.status(201).json({ message: '反馈提交成功', feedback });
+        date: new Date(),
+      }));
+
+      await Feedback.insertMany(feedbackData);
+      res.status(201).json({ message: '反馈提交成功' });
     } catch (error) {
       console.error("Error in feedback submission API:", error);
       res.status(500).json({ message: '服务器错误' });

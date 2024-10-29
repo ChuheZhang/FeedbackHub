@@ -14,19 +14,21 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // 检查提交数据
+      console.log("Register form data:", form);
       const res = await axios.post('/api/auth/register', form);
+      
       localStorage.setItem('token', res.data.token);
       setMessage('注册成功！');
 
-      // 根据角色跳转到不同页面
       if (form.role === 'user') {
-        router.push('/submit-feedback'); // 信息员跳转到反馈提交页面
+        router.push('/submit-feedback');
       } else if (form.role === 'teacher') {
-        router.push('/view-feedback'); // 老师跳转到查看反馈页面
+        router.push('/view-feedback');
       }
     } catch (error) {
       setMessage(error.response?.data?.message || '注册失败');
-      console.error("Error in registration:", error);
+      console.error("Error in registration:", error.response?.data || error);
     }
   };
 
