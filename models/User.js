@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['user', 'leader'], default: 'user' },
+  role: { type: String, enum: ['user', 'teacher'], default: 'user' },
 }, { timestamps: true });
 
 UserSchema.pre('save', async function (next) {
